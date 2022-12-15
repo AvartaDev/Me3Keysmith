@@ -1,6 +1,5 @@
-import path from 'path'
 import _ from 'lodash'
-import QRLogo from 'qr-with-logo'
+import QRCode from 'qrcode'
 import RandomString from 'randomstring'
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
 
@@ -155,17 +154,10 @@ export default class Me3 {
     return JSON.parse(decrypted)
   }
 
-  private async _generateQR(content: string): Promise<string> {
-    const logoPath = path.join(__dirname, '../res', 'logo.png')
-    return new Promise((res, rej) => {
-      QRLogo.generateQRWithLogo(
-        content,
-        logoPath,
-        {errorCorrectionLevel: 'M'},
-        'Base64',
-        'qr.png',
-        (b64: never) => res(b64)
-      ).catch(rej)
+  private async _generateQR(content: string): Promise<Buffer> {
+    return QRCode.toBuffer(content, {
+      version: 30,
+      errorCorrectionLevel: 'H',
     })
   }
 
@@ -249,12 +241,12 @@ export default class Me3 {
 
     const [, jsonId] = await Promise.all([
       this._gClient.saveFiles(
-        this._gClient.b642Readable(qrCode),
+        this._gClient.toReadable(qrCode),
         DriveName.qr,
         'image/png'
       ),
       this._gClient.saveFiles(
-        this._gClient.str2Readable(jsonStr),
+        this._gClient.toReadable(jsonStr, 'utf8'),
         DriveName.json,
         'application/json'
       ),

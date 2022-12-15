@@ -2,6 +2,7 @@ import _ from 'lodash'
 import * as url from 'url'
 import {Readable} from 'stream'
 import {google} from 'googleapis'
+import {Encoding} from 'crypto'
 
 const SCOPES = [
   'https://www.googleapis.com/auth/userinfo.email',
@@ -80,11 +81,10 @@ export default class Google {
     return file.data
   }
 
-  b642Readable(base64: string) {
-    return Readable.from(Buffer.from(base64, 'base64'))
-  }
-
-  str2Readable(str: string) {
-    return Readable.from(str, {encoding: 'utf8'})
+  toReadable(data: string | Buffer, encoding?: Encoding) {
+    if (Buffer.isBuffer(data)) {
+      return Readable.from(data)
+    }
+    return Readable.from(Buffer.from(data, encoding))
   }
 }
