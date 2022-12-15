@@ -1,13 +1,13 @@
 import _ from 'lodash'
 import QRCode from 'qrcode'
 import RandomString from 'randomstring'
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 import * as bip39 from 'bip39'
-import {CommData, DriveName, ME3Config} from './config'
+import { CommData, DriveName, ME3Config } from './config'
 import createWallet from './wallet'
 import Google from './google'
-import {aes, rsa, v2} from './safe'
+import { aes, rsa, v2 } from './safe'
 
 export default class Me3 {
   private readonly _gClient: Google
@@ -45,7 +45,7 @@ export default class Me3 {
       return config
     })
     this._client.interceptors.response.use(function (resp: AxiosResponse) {
-      let {data} = resp.data
+      let { data } = resp.data
       const isCipherBody = _.every(['data', 'secret'], _.partial(_.has, data))
       if (isCipherBody) {
         data = _this.decryptData(data, false)
@@ -74,11 +74,11 @@ export default class Me3 {
     const email = await this._gClient.getUserEmail()
     await this._exchangeKey(email!)
 
-    const {data} = await this._client.post(
+    const { data } = await this._client.post(
       '/api/light/register',
       null,
       {
-        params: {faceId: email},
+        params: { faceId: email },
       }
     )
 
@@ -95,7 +95,7 @@ export default class Me3 {
 
     console.log(`New User, Create wallets for ${email}!`)
     const wallets = await this._createWallets()
-    const {key, salt, password} = this._userSecret!
+    const { key, salt, password } = this._userSecret!
     const decryptedKey = aes.decrypt(key, password, salt)
 
     for (const w of wallets) {
@@ -123,14 +123,14 @@ export default class Me3 {
   encryptData(data: any, withAES = false): CommData {
     const secure = {
       rsaKey: this._serverPubRsa!,
-      isPubKey: true
+      isPubKey: true,
     }
     if (withAES === true && !_.isEmpty(this._userSecret)) {
-      const {password, key, salt} = this._userSecret!
+      const { password, key, salt } = this._userSecret!
       const decryptedKey = aes.decrypt(key, password, salt)
       _.merge(secure, {
         aesKey: decryptedKey,
-        aesSalt: salt
+        aesSalt: salt,
       })
     }
     return v2.encrypt(JSON.stringify(data), secure)
@@ -139,14 +139,14 @@ export default class Me3 {
   decryptData(data: CommData, withAES = false): any {
     const secure = {
       rsaKey: this._myPriRsa!,
-      isPubKey: false
+      isPubKey: false,
     }
     if (withAES === true && !_.isEmpty(this._userSecret)) {
-      const {password, key, salt} = this._userSecret!
+      const { password, key, salt } = this._userSecret!
       const decryptedKey = aes.decrypt(key, password, salt)
       _.merge(secure, {
         aesKey: decryptedKey,
-        aesSalt: salt
+        aesSalt: salt,
       })
     }
 
@@ -162,7 +162,7 @@ export default class Me3 {
   }
 
   private async _createWallets() {
-    const {data: chains} = await this._client.get('/api/mainChain/list')
+    const { data: chains } = await this._client.get('/api/mainChain/list')
     const refined: Record<string, [any]> = _.reduce(
       chains,
       (result, acc) => {
@@ -190,10 +190,10 @@ export default class Me3 {
   }
 
   private async _loadWallets() {
-    const {password, key, salt} = this._userSecret!
+    const { password, key, salt } = this._userSecret!
     const decryptedKey = aes.decrypt(key, password, salt)
 
-    const {data} = await this._client.get('/api/light/secretList')
+    const { data } = await this._client.get('/api/light/secretList')
     return _.chain(data)
       .map((w) => {
         try {
@@ -218,10 +218,10 @@ export default class Me3 {
   private async _loadBackupFile(userDetail?: any) {
     const fetchOrUpdateGFileId = async (fileId?: string) =>
       this._client.post('/api/light/userfileId', null, {
-        params: {fileId},
+        params: { fileId },
       }).then((resp) => _.get(resp, 'data.fileId'))
 
-    const {uid, password, salt} = userDetail
+    const { uid, password, salt } = userDetail
     if (_.isNil(uid) || _.isNil(password) || _.isNil(salt)) {
       const fileId = await fetchOrUpdateGFileId('')
       if (!_.isEmpty(fileId)) {
@@ -235,7 +235,7 @@ export default class Me3 {
       length: 40,
     })
     const key = aes.encrypt(`${randStr}${new Date().getTime()}`, password, salt)
-    const secret = _.pickBy({uid, password, salt, key}, _.identity)
+    const secret = _.pickBy({ uid, password, salt, key }, _.identity)
     const jsonStr = JSON.stringify(secret)
     const qrCode = await this._generateQR(jsonStr)
 
@@ -259,12 +259,12 @@ export default class Me3 {
   }
 
   private async _exchangeKey(email: string) {
-    const {privateKey, publicKey} = await rsa.genKeyPair()
-    const {data} = await this._client.post(
+    const { privateKey, publicKey } = await rsa.genKeyPair()
+    const { data } = await this._client.post(
       '/api/light/exchange/key',
       {
         email,
-        publicKey
+        publicKey,
       }
     )
 

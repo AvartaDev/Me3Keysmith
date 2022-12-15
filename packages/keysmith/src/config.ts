@@ -28,4 +28,4 @@ interface CommData {
   data: string;
 }
 
-export {DriveName, ME3Config, RsaKey, CommSecure, CommData}
+export { DriveName, ME3Config, RsaKey, CommSecure, CommData }

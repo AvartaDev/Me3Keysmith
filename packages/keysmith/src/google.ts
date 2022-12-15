@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import * as url from 'url'
-import {Readable} from 'stream'
-import {google} from 'googleapis'
-import {Encoding} from 'crypto'
+import { Readable } from 'stream'
+import { google } from 'googleapis'
+import { Encoding } from 'crypto'
 
 const SCOPES = [
   'https://www.googleapis.com/auth/userinfo.email',
@@ -23,8 +23,8 @@ export default class Google {
       this._redirectUrl
     )
 
-    google.options({auth: this._auth})
-    this._drive = google.drive({version: 'v3'})
+    google.options({ auth: this._auth })
+    this._drive = google.drive({ version: 'v3' })
   }
 
   generateAuthUrl() {
@@ -42,20 +42,20 @@ export default class Google {
     ) {
       if (!_.startsWith(redirectUrl, this._redirectUrl)) return false
 
-      const {query} = url.parse(redirectUrl, true)
+      const { query } = url.parse(redirectUrl, true)
       code = _.get(query, 'code', '').toString()
     }
     if (_.isEmpty(code)) return false
 
-    const {tokens} = await this._auth.getToken(code)
+    const { tokens } = await this._auth.getToken(code)
     console.log(tokens)
     this._auth.setCredentials(tokens)
     return true
   }
 
   async getUserEmail() {
-    const googleAuth = google.oauth2({version: 'v2'})
-    const {data} = await googleAuth.userinfo.get()
+    const googleAuth = google.oauth2({ version: 'v2' })
+    const { data } = await googleAuth.userinfo.get()
     return data.email
   }
 

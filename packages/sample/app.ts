@@ -1,4 +1,4 @@
-import {AddressInfo} from 'net'
+import { AddressInfo } from 'net'
 import express from 'express'
 import _ from 'lodash'
 import dotenv from 'dotenv'
@@ -8,7 +8,7 @@ dotenv.config()
 
 const app = express()
 const server = app.listen(process.env.PORT || 5000, () => {
-  const {port} = server.address() as AddressInfo
+  const { port } = server.address() as AddressInfo
   console.log('server is running on port', port)
 })
 
@@ -35,10 +35,10 @@ app.get('/', async function (req, res) {
       console.table(wallets)
       res.redirect('https://www.avarta.io/')
     } catch (e) {
-      res.json({error: 'Oops, ERROR!', msg: e.message})
+      res.json({ error: 'Oops, ERROR!', msg: e.message })
     }
     return
   }
 
-  res.json({error: 'Can\'t recover the wallets'})
+  res.json({ error: 'Can\'t recover the wallets' })
 })

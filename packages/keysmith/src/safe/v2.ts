@@ -1,9 +1,9 @@
 import _ from 'lodash'
-import {randomBytes} from 'crypto'
+import { randomBytes } from 'crypto'
 import * as aes from './aes'
 import * as rsa from './rsa'
 import * as chacha from './chacha'
-import {CommData, CommSecure} from '../config'
+import { CommData, CommSecure } from '../config'
 
 export function encrypt(plain: string, commSecure: CommSecure): CommData {
   if (!_.isEmpty(commSecure.aesPwd) && !_.isEmpty(commSecure.aesSalt)) {
@@ -24,7 +24,7 @@ export function encrypt(plain: string, commSecure: CommSecure): CommData {
     chachaKey,
     commSecure.isPubKey
   ).toString('base64')
-  return {data, secret}
+  return { data, secret }
 }
 
 export function decrypt(data: CommData, commSecure: CommSecure): string {
