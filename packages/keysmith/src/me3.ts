@@ -56,7 +56,7 @@ export default class Me3 {
   }
 
   /**
-   * Please use this instance without `process.env.endpoint`
+   * Please use this instance with `process.env.endpoint`
    */
   me3ApiClient(): AxiosInstance {
     return this._client
