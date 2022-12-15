@@ -10,13 +10,30 @@ import Google from './google'
 import { aes, rsa, v2 } from './safe'
 
 export default class Me3 {
+  // deprecate
   private readonly _gClient: Google
+  /**
+   * Please use this instance with `process.env.endpoint`
+   */
   private readonly _client: AxiosInstance
 
+  me3ApiClient(): AxiosInstance {
+    return this._client
+  }
+
   private _apiToken?: string
-  private _userSecret?: any
   private _myPriRsa?: string
   private _serverPubRsa?: string
+
+
+  private _userSecret?: any
+  get userSecret() {
+    return this._userSecret
+  }
+
+  set userSecret(secret: any | undefined) {
+    this._userSecret = secret
+  }
 
   constructor(credential: ME3Config) {
     this._gClient = new Google(
@@ -55,12 +72,6 @@ export default class Me3 {
     })
   }
 
-  /**
-   * Please use this instance with `process.env.endpoint`
-   */
-  me3ApiClient(): AxiosInstance {
-    return this._client
-  }
 
   getGAuthUrl() {
     return this._gClient.generateAuthUrl()
@@ -217,9 +228,11 @@ export default class Me3 {
 
   private async _loadBackupFile(userDetail?: any) {
     const fetchOrUpdateGFileId = async (fileId?: string) =>
-      this._client.post('/api/light/userfileId', null, {
-        params: { fileId },
-      }).then((resp) => _.get(resp, 'data.fileId'))
+      this._client.post(
+        '/api/light/userfileId',
+        null,
+        { params: { fileId } }
+      ).then(resp => _.get(resp, 'data.fileId'))
 
     const { uid, password, salt } = userDetail
     if (_.isNil(uid) || _.isNil(password) || _.isNil(salt)) {
