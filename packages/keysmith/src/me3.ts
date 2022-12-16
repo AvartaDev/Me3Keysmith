@@ -4,7 +4,7 @@ import RandomString from 'randomstring'
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 import * as bip39 from 'bip39'
-import { CommData, DriveName, ME3Config } from './config'
+import { CommData, DriveName, ME3Config } from './types'
 import createWallet from './wallet'
 import Google from './google'
 import { aes, rsa, v2 } from './safe'

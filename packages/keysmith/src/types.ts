@@ -16,9 +16,14 @@ interface RsaKey {
   publicKey: string;
 }
 
-interface CommSecure {
-  aesPwd?: string;
-  aesSalt?: string;
+interface UserSecret {
+  uid: string;
+  salt: string;
+  password: string; // Private or Public RSA
+  key: string;
+}
+interface CommSecret {
+  userSecret?: UserSecret;
   rsaKey: string; // Private or Public RSA
   isPubKey: boolean;
 }
@@ -28,4 +33,4 @@ interface CommData {
   data: string;
 }
 
-export { DriveName, ME3Config, RsaKey, CommSecure, CommData }
+export { DriveName, ME3Config, RsaKey, UserSecret, CommSecret, CommData }

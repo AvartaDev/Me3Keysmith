@@ -8,7 +8,7 @@ import {
   publicDecrypt,
   publicEncrypt,
 } from 'crypto'
-import { RsaKey } from '../config'
+import { RsaKey } from '../types'
 
 export async function genKeyPair(): Promise<RsaKey> {
   const { publicKey, privateKey } = await generateKeyPairSync('rsa', {
