@@ -1,4 +1,4 @@
-import Google from '../src/google'
+import Google from '../src/social/google'
 import { ALICE, CONFIG, REDIRECTED, TEST_QR } from './env.test'
 
 describe('Google class testing', () => {

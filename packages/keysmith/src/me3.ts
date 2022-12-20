@@ -1,17 +1,18 @@
 import _ from 'lodash'
+import * as bip39 from 'bip39'
 import QRCode from 'qrcode'
 import RandomString from 'randomstring'
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { detect } from 'detect-browser'
 
-import * as bip39 from 'bip39'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { CommData, DriveName, ME3Config } from './types'
 import createWallet from './wallet'
-import Google from './google'
 import { aes, rsa, v2 } from './safe'
+import { Provider } from './social/provider'
 
+const isRN = detect().type === 'react-native'
 export default class Me3 {
-  // deprecate
-  private readonly _gClient: Google
+  private _gClient: Provider
   /**
    * Please use this instance with `process.env.endpoint`
    */
@@ -24,23 +25,27 @@ export default class Me3 {
   private _apiToken?: string
   private _myPriRsa?: string
   private _serverPubRsa?: string
-
-
   private _userSecret?: any
-  get userSecret() {
-    return this._userSecret
-  }
-
-  set userSecret(secret: any | undefined) {
-    this._userSecret = secret
-  }
 
   constructor(credential: ME3Config) {
-    this._gClient = new Google(
-      credential.client_id,
-      credential.client_secret,
-      credential.redirect_uris
-    )
+    if (isRN) {
+      import('./social/google.rn').then(({ default: Google }) => {
+        this._gClient = new Google({
+          clientId: credential.clientId,
+          clientSecret: credential.clientSecret,
+          redirectUri: credential.redirectUri,
+        })
+      })
+    } else {
+      import('./social/google.node').then(({ default: Google }) => {
+        this._gClient = new Google({
+          clientId: credential.clientId,
+          clientSecret: credential.clientSecret,
+          redirectUri: credential.redirectUri,
+        })
+      })
+    }
+
     this._client = axios.create({
       baseURL: credential.endpoint,
     })
@@ -51,7 +56,7 @@ export default class Me3 {
     }
     const _this: Me3 = this
     this._client.interceptors.request.use(function (
-      config: AxiosRequestConfig
+      config: AxiosRequestConfig,
     ) {
       config.headers = _.chain(companyHeader)
         .set('Light-token', _this._apiToken)
@@ -72,17 +77,16 @@ export default class Me3 {
     })
   }
 
-
-  getGAuthUrl() {
+  getGAuthUrl(): string {
     return this._gClient.generateAuthUrl()
   }
 
-  async getGToken(redirectUrl: string): Promise<boolean> {
-    return await this._gClient.getTokens(redirectUrl)
+  async authenticate(redirectUri: string): Promise<boolean> {
+    return await this._gClient.authenticate(redirectUri)
   }
 
   async getWallets() {
-    const email = await this._gClient.getUserEmail()
+    const { email } = await this._gClient.getUser()
     await this._exchangeKey(email!)
 
     const { data } = await this._client.post(
@@ -90,7 +94,7 @@ export default class Me3 {
       null,
       {
         params: { faceId: email },
-      }
+      },
     )
 
     this._apiToken = _.get(data, 'token', '')
@@ -185,7 +189,7 @@ export default class Me3 {
         result[_.toLower(acc.series)] = list
         return result
       },
-      {}
+      {},
     )
 
     // Create wallets
@@ -217,7 +221,7 @@ export default class Me3 {
         } catch (e) {
           console.log(
             `Wallet - [${w.chainName}::${w.walletName}::${w.walletAddress} decryption failed`,
-            _.get(e, 'message')
+            _.get(e, 'message'),
           )
         }
         return undefined
@@ -231,7 +235,7 @@ export default class Me3 {
       this._client.post(
         '/api/light/userfileId',
         null,
-        { params: { fileId } }
+        { params: { fileId } },
       ).then(resp => _.get(resp, 'data.fileId'))
 
     const { uid, password, salt } = userDetail
@@ -253,15 +257,15 @@ export default class Me3 {
     const qrCode = await this._generateQR(jsonStr)
 
     const [, jsonId] = await Promise.all([
-      this._gClient.saveFiles(
-        this._gClient.toReadable(qrCode),
+      this._gClient.saveFile(
+        qrCode,
         DriveName.qr,
-        'image/png'
+        'image/png',
       ),
-      this._gClient.saveFiles(
-        this._gClient.toReadable(jsonStr, 'utf8'),
+      this._gClient.saveFile(
+        Buffer.from(jsonStr, 'utf8'),
         DriveName.json,
-        'application/json'
+        'application/json',
       ),
     ])
     await fetchOrUpdateGFileId(jsonId!)
@@ -278,7 +282,7 @@ export default class Me3 {
       {
         email,
         publicKey,
-      }
+      },
     )
 
     this._myPriRsa = privateKey

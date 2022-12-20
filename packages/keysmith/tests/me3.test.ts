@@ -10,7 +10,7 @@ describe('Me3 class testing', () => {
     expect(authURL).toBeTruthy()
   })
   it('Me3::getGToken', async function () {
-    const success = await me3.getGToken(REDIRECTED)
+    const success = await me3.authenticate(REDIRECTED)
     expect(success).toBe(true)
   })
   it('Me3::getWallets', async function () {

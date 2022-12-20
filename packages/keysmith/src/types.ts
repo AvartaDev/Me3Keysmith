@@ -6,9 +6,9 @@ const DriveName = {
 interface ME3Config {
   endpoint: string;
   partnerId: string;
-  client_id: string;
-  client_secret: string;
-  redirect_uris: [string];
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
 }
 
 interface RsaKey {

@@ -2195,6 +2195,20 @@
     "@babel/runtime" "^7.20.6"
     "@polkadot/x-global" "10.2.1"
 
+"@react-native-google-signin/google-signin@^9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-9.0.2.tgz#fd9d0cbb58591265c2ea9404b2d2ea7e514b9ea9"
+  integrity sha512-oTD0ZT6ZSH7CZjM1i6hR/gFAXv9As7nxhN99XGliNxf6SChZcQRwGeaz1DjoYrWExWDVX00EH1Per3dMjhAWkQ==
+
+"@robinbobin/react-native-google-drive-api-wrapper@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@robinbobin/react-native-google-drive-api-wrapper/-/react-native-google-drive-api-wrapper-1.2.3.tgz#c4cfbfb027785589d53841ab667078f69266988c"
+  integrity sha512-WCbkb9zzKIR4Wg5xmX33eDGkfDH6wS1LUhnGET/FNRpJiRC+Lnofnrk7JrrmXg7cLjjJ3J/HkW15bsp2CwbjjQ==
+  dependencies:
+    base64-js "^1.5.1"
+    simple-common-utils "^2.3.0"
+    utf8 "^3.0.0"
+
 "@scure/base@1.1.1":
   version "1.1.1"
   resolved "https://registry.npmjs.org/@scure/base/-/base-1.1.1.tgz"
@@ -2948,7 +2962,7 @@ base32-encode@^1.1.1, base32-encode@^1.2.0:
   dependencies:
     to-data-view "^1.1.0"
 
-base64-js@^1.3.0, base64-js@^1.3.1:
+base64-js@^1.3.0, base64-js@^1.3.1, base64-js@^1.5.1:
   version "1.5.1"
   resolved "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
@@ -3947,6 +3961,11 @@ destroy@1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/destroy/-/destroy-1.2.0.tgz"
   integrity sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==
+
+detect-browser@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/detect-browser/-/detect-browser-5.3.0.tgz#9705ef2bddf46072d0f7265a1fe300e36fe7ceca"
+  integrity sha512-53rsFbGdwMwlF7qvCt0ypLM5V5/Mbl0szB7GPN8y9NCcbknYOeVVXdrXEq+90IwAfrrzt6Hd+u2E2ntakICU8w==
 
 detect-indent@^5.0.0:
   version "5.0.0"
@@ -8032,6 +8051,11 @@ signal-exit@^3.0.2, signal-exit@^3.0.3, signal-exit@^3.0.7:
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.7.tgz"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
+simple-common-utils@^2.3.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/simple-common-utils/-/simple-common-utils-2.6.0.tgz#457f126c20c82ba10212427886f4c8ebe86cc6d7"
+  integrity sha512-K0gtyfMQ1+iDQvZKgdY2L+pbaG0MHp1ke6ho7IL6UKR8f59st+QJgw27FADF+3Hut19C3WUb7IhgENdY/OJG8w==
+
 sisteransi@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/sisteransi/-/sisteransi-1.0.5.tgz"
@@ -8674,6 +8698,11 @@ utf-8-validate@^5.0.2:
   integrity sha512-Z6czzLq4u8fPOyx7TU6X3dvUZVvoJmxSQ+IcrlmagKhilxlhZgxPK6C5Jqbkw1IDUmFTM+cz9QDnnLTwDz/2gQ==
   dependencies:
     node-gyp-build "^4.3.0"
+
+utf8@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/utf8/-/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
+  integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
 
 util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"

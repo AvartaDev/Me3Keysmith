@@ -46,14 +46,21 @@
     "@polkadot/keyring": "^10.1.8",
     "@polkadot/util": "^10.1.8",
     "@polkadot/util-crypto": "^10.1.8",
+    "@react-native-google-signin/google-signin": "^9.0.2",
+    "@robinbobin/react-native-google-drive-api-wrapper": "^1.2.3",
     "axios": "^0.27.2",
     "bip39": "^3.0.4",
     "bitcore-lib": "^8.25.38",
     "bitcore-lib-cash": "^8.25.38",
     "bitcore-lib-ltc": "^8.25.38",
+    "detect-browser": "^5.3.0",
     "ethers": "^5.7.1",
     "googleapis": "^108.0.0",
     "qrcode": "^1.5.1",
     "randomstring": "^1.2.2"
+  },
+  "peerDependencies": {
+    "@react-native-google-signin/google-signin": "^9.0.2",
+    "@robinbobin/react-native-google-drive-api-wrapper": "^1.2.3"
   }
 }

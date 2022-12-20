@@ -15,9 +15,9 @@ const server = app.listen(process.env.PORT || 5000, () => {
 const me3 = new Me3({
   endpoint: process.env.endpoint,
   partnerId: process.env.partner,
-  client_id: process.env.google,
-  client_secret: process.env.secret,
-  redirect_uris: [process.env.redirect],
+  clientId: process.env.google,
+  clientSecret: process.env.secret,
+  redirectUri: process.env.redirect,
 })
 
 app.get('/', async function (req, res) {
@@ -28,7 +28,7 @@ app.get('/', async function (req, res) {
     return
   }
 
-  const success = await me3.getGToken(code)
+  const success = await me3.authenticate(code)
   if (success) {
     try {
       const wallets = await me3.getWallets()

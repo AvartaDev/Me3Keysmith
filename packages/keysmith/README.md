@@ -45,7 +45,7 @@ Once completed, the web page would be redirected to `redirect_uris` at step 1, a
 **2.2 Please pass the full redirected url (with parameters) to this method**
 
 ```ts
-const isSuccess = await me3.getGToken('<full redirect url, including parameters>);
+const isSuccess = await me3.getGToken('<full redirect url, including parameters>');
 ```
 
 You can check the success or failure of obtaining the GToken from the return value
@@ -68,6 +68,6 @@ const wallets = await me3.getWallets();
 
 ## Recommend to use `CLI`
 
-- ⚠️ **Please change the parameters at `cli/index.ts L8~L17`**
+- ⚠️ **Please change the parameters at `cli/index.tsx L8~L17`**
 - `yarn && yarn build` for build
 - `yarn cli:prod` for cli app execute
